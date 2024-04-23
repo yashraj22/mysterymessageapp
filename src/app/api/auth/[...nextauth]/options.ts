@@ -1,3 +1,4 @@
+
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import dbConnect from "@/app/lib/dbConnect";
@@ -9,8 +10,8 @@ export const authOptions : NextAuthOptions = {
         CredentialsProvider({
             name : "Credentials",
             id : "credentials",
-            credentials: {
-                email: { label: "Email", type: "text" },
+            credentials : {
+                email: { label: "Email", type: "email" },
                 password: { label: "Password", type: "password" }
             },
             async authorize(credentials : any) : Promise<any> {
@@ -37,7 +38,6 @@ export const authOptions : NextAuthOptions = {
                     if(!isMatched){
                         throw new Error("Check your credentials");
                     }
-
                     else{
                         return user;
                     }
