@@ -5,10 +5,6 @@ import {NextRequest , NextResponse} from "next/server";
 import { VerifySchema } from "@/app/schemas/verifySchema";
 import { UsernameValidation } from "@/app/schemas/signUpSchema";
 
-// const VerificationCodeSchema = z.object({
-//     verifyCode : VerifySchema
-// });
-
 const UsernameSchema = z.object({
     username : UsernameValidation
 });
