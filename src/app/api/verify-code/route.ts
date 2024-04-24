@@ -5,9 +5,9 @@ import {NextRequest , NextResponse} from "next/server";
 import { VerifySchema } from "@/app/schemas/verifySchema";
 import { UsernameValidation } from "@/app/schemas/signUpSchema";
 
-const VerificationCodeSchema = z.object({
-    verifyCode : VerifySchema
-});
+// const VerificationCodeSchema = z.object({
+//     verifyCode : VerifySchema
+// });
 
 const UsernameSchema = z.object({
     username : UsernameValidation
@@ -22,29 +22,9 @@ export async function POST(request : NextRequest){
 
         const decodedUsername = decodeURIComponent(username);
 
-        // zod for verifyCode
+         // zod for username
 
-        const codeCheck = {
-            verifyCode : code
-        }
-
-        const result = VerificationCodeSchema.safeParse(codeCheck);
-
-        if(!result.success){
-            const verificationCodeError = result.error.format().verifyCode?._errors || [];
-            return NextResponse.json({
-                success : result.success,
-                message : verificationCodeError.length > 0 ? verificationCodeError.join(", ") : "Invalid verification code"
-            },
-        {
-            status : 400
-        }
-        )
-        }
-
-        // zod for username
-
-        const usernameCheck = {
+         const usernameCheck = {
             username : decodedUsername
         };
 
@@ -53,8 +33,27 @@ export async function POST(request : NextRequest){
         if(!usernameResult.success){
             const usernameError = usernameResult.error.format().username?._errors || [];
             return NextResponse.json({
-                success : result.success,
+                success : usernameResult.success,
                 message : usernameError.length > 0 ? usernameError.join(", ") : "Invalid Username"
+            },
+        {
+            status : 400
+        }
+        )
+        }
+
+
+        // zod for verifyCode
+
+        const result = VerifySchema.safeParse({
+            verifyCode : code
+        });
+
+        if(!result.success){
+            const verificationCodeError = result.error.format().verifyCode?._errors || [];
+            return NextResponse.json({
+                success : result.success,
+                message : verificationCodeError.length > 0 ? verificationCodeError.join(", ") : "Invalid verification code"
             },
         {
             status : 400
