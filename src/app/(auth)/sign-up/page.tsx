@@ -59,8 +59,15 @@ const SignUpPage = () => {
           const msg = response.data.message;
           setUsernameMessage(msg);
         } catch (error) {
+          console.error("Error in sign-up...");
           const axiosError = error as AxiosError<ApiResponse>;
-
+          let errorMessage = axiosError.response?.data?.message;
+          toast({
+            title: "Signup Failed",
+            description: errorMessage,
+            variant: "destructive",
+          });
+          setIsSubmitting(false);
           setUsernameMessage(
             axiosError.response?.data.message ?? "Error checking username"
           );
